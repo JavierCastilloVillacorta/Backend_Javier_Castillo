@@ -4,17 +4,8 @@ const Storage = require('../storage'),
 
 var Router = express.Router()
 
-  Router.get('/search', function(req, res){
-    Storage.getData()
-           .then(function(data){
-             res.json({"error": false, "datos":data})
-           })
-           .catch(function(err){
-             res.json({ "error": true, "datos": err });
-           })
-  });
-
-  Router.get('/filteroptions', function(req, res){
+  // FILTROS BUSQUEDA
+  Router.get('/filtros', function(req, res){
     Storage.getData()
            .then(function(data){
              let ciudad = []
@@ -26,10 +17,22 @@ var Router = express.Router()
              res.json({"error": false, "ciudad": ciudad, "tipo": tipo})
            })
            .catch(function(err){
-             res.json({ "error": true, "err": err });
+             res.json({ "error": true, "err": err })
            })
   })
 
+  // BUSQUEDA DE RESULTADOS
+  Router.get('/search', function(req, res){
+    Storage.getData()
+           .then(function(data){
+             res.json({"error": false, "datos":data})
+           })
+           .catch(function(err){
+             res.json({ "error": true, "datos": err })
+           })
+  });
+  
+// RESULTADOS FILTROS BUSQUEDA
 Router.get('/ciudad/:ciudadId/tipo/:tipoId/desde/:desdeVal/hasta/:hastaVal', function(req, res){
   let params = req.params
   let datos = [];
@@ -65,10 +68,10 @@ Router.get('/ciudad/:ciudadId/tipo/:tipoId/desde/:desdeVal/hasta/:hastaVal', fun
                    datos.push(key);
                }
            });
-           res.status(200).json({ datos, params });
+           res.status(200).json({ datos, params })
          })
          .catch((err) => {
-             res.json({ "error": true, "err": err });
+             res.json({ "error": true, "err": err })
          });
 })
 
